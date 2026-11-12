@@ -1,0 +1,14 @@
+# Biến môi trường và API key
+.env
+.env.*
+!.env.example
+
+# Cache và môi trường ảo Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Dữ liệu sinh ra khi chia tài liệu và tạo index
+/data/vector_store/
+/data/chunks.json
