@@ -78,6 +78,9 @@ def show_sources(results):
                 chunk.get("document_id", ""),
             )
 
+            if result.get("graph_topics"):
+                st.write("**Chủ đề Neo4j:**", ", ".join(result["graph_topics"]))
+
             show_source_url(chunk.get("url", ""))
 
             st.markdown("**Nội dung đoạn:**")

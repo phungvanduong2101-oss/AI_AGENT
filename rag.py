@@ -9,6 +9,8 @@ from google import genai
 from google.genai import types
 from sentence_transformers import SentenceTransformer
 
+from knowledge_graph import find_topics
+
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env", override=True)
@@ -17,6 +19,8 @@ STORE_DIR = BASE_DIR / "data/vector_store"
 EXPECTED_MODEL = "intfloat/multilingual-e5-small"
 
 TOP_K = 3
+GRAPH_CANDIDATES = 15
+GRAPH_BOOST = 0.04
 DEBUG = False
 
 SYSTEM_PROMPT = """
@@ -135,7 +139,7 @@ def retrieve(question, index, chunks, model):
 
     scores, positions = index.search(
         query_vector,
-        min(TOP_K, index.ntotal),
+        min(GRAPH_CANDIDATES, index.ntotal),
     )
 
     results = []
@@ -149,7 +153,17 @@ def retrieve(question, index, chunks, model):
             "score": float(score),
         })
 
-    return results
+    graph_topics = find_topics(
+        question, [result["chunk"]["chunk_id"] for result in results]
+    )
+    for result in results:
+        result["graph_topics"] = graph_topics.get(result["chunk"]["chunk_id"], [])
+
+    results.sort(
+        key=lambda result: result["score"] + GRAPH_BOOST * bool(result["graph_topics"]),
+        reverse=True,
+    )
+    return results[:TOP_K]
 
 
 def build_context(results):
@@ -162,6 +176,7 @@ def build_context(results):
             f"[{number}]\n"
             f"Tiêu đề: {chunk.get('title', '')}\n"
             f"Mục: {chunk.get('heading', '')}\n"
+            f"Nguồn: {chunk.get('url', '')}\n"
             f"Nội dung:\n{chunk['text']}"
         )
 

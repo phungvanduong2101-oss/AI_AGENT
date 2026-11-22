@@ -1,0 +1,16 @@
+services:
+  neo4j:
+    image: neo4j:5.26
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH: "${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD in .env}"
+      NEO4J_server_directories_import: /import
+    volumes:
+      - graph_data:/data
+      - ./neo4j/import:/import:ro
+      - ./neo4j:/project:ro
+
+volumes:
+  graph_data:

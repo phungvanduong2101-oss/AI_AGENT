@@ -1,0 +1,11 @@
+topic_id,name,aliases
+diabetes,Đái tháo đường,đái tháo đường|tiểu đường
+type1,Đái tháo đường tuýp 1,tuýp 1|type 1|loại 1|típ 1|tuýp i
+type2,Đái tháo đường tuýp 2,tuýp 2|type 2|loại 2|típ 2
+prediabetes,Tiền tiểu đường,tiền tiểu đường|tiền đái tháo đường
+symptoms,Triệu chứng,triệu chứng|dấu hiệu|biểu hiện
+complications,Biến chứng,biến chứng
+nutrition,Dinh dưỡng,chế độ ăn|ăn uống|thực đơn|dinh dưỡng|ăn gì
+glucose,Đường huyết,đường huyết|glucose|chỉ số tiểu đường
+hba1c,HbA1c,hba1c|a1c
+insulin_resistance,Kháng insulin,kháng insulin|đề kháng insulin
